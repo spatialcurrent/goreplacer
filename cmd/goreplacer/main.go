@@ -163,9 +163,9 @@ If the positional argument is "-" or not given, then reads from stdin.`,
 			}
 
 			if max > 0 {
-				out, err := r.ReplaceBytesN(in, max)
-				if err != nil {
-					return fmt.Errorf("error replacing bytes %q: %w", in, err)
+				out, errReplaceBytes := r.ReplaceBytesN(in, max)
+				if errReplaceBytes != nil {
+					return fmt.Errorf("error replacing bytes %q: %w", in, errReplaceBytes)
 				}
 				if _, err := os.Stdout.Write(append(out, '\n')); err != nil {
 					return fmt.Errorf("error writing output to stdout %q", string(out))

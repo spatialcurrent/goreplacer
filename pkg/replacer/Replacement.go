@@ -28,9 +28,24 @@ func (r *Replacement) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (r *Replacement) UnmarshalYAML(unmarshal func(object interface{}) error) error {
+	values := make([]string, 0)
+	err := unmarshal(&values)
+	if err != nil {
+		return fmt.Errorf("error unmarshaling YAML into slice: %w", err)
+	}
+	if len(values) != 2 {
+		return fmt.Errorf("error unmarshaling replacement with length %d, expecting 2 values", len(values))
+	}
+	r.Old = []byte(values[0])
+	r.New = []byte(values[1])
+	return nil
+}
+
 func (r Replacement) MarshalJSON() ([]byte, error) {
-	return json.Marshal([]string{
-		string(r.Old),
-		string(r.New),
-	})
+	return json.Marshal([]string{string(r.Old), string(r.New)})
+}
+
+func (r Replacement) MarshalYAML() (interface{}, error) {
+	return []string{string(r.Old), string(r.New)}, nil
 }
