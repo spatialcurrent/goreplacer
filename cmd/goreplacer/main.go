@@ -167,8 +167,8 @@ If the positional argument is "-" or not given, then reads from stdin.`,
 				if errReplaceBytes != nil {
 					return fmt.Errorf("error replacing bytes %q: %w", in, errReplaceBytes)
 				}
-				if _, err := os.Stdout.Write(append(out, '\n')); err != nil {
-					return fmt.Errorf("error writing output to stdout %q", string(out))
+				if _, errWrite := os.Stdout.Write(append(out, '\n')); errWrite != nil {
+					return fmt.Errorf("error writing output to stdout %q: %w", string(out), errWrite)
 				}
 				return nil
 			}
@@ -177,8 +177,8 @@ If the positional argument is "-" or not given, then reads from stdin.`,
 			if err != nil {
 				return fmt.Errorf("error replacing bytes %q: %w", in, err)
 			}
-			if _, err := os.Stdout.Write(append(out, '\n')); err != nil {
-				return fmt.Errorf("error writing output to stdout %q", string(out))
+			if _, errWrite := os.Stdout.Write(append(out, '\n')); errWrite != nil {
+				return fmt.Errorf("error writing output to stdout %q: %w", string(out), errWrite)
 			}
 
 			return nil
