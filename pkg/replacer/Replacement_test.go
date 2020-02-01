@@ -26,6 +26,7 @@ func TestReplacementJSON(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expected, out)
 	j, err := json.Marshal(out)
+	assert.NoError(t, err)
 	assert.Equal(t, in, string(j))
 }
 
@@ -44,5 +45,6 @@ func TestReplacementYAML(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expected, out)
 	j, err := yaml.Marshal(out)
+	assert.NoError(t, err)
 	assert.Equal(t, in, string(j))
 }
