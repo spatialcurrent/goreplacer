@@ -19,7 +19,10 @@ type Replacement struct {
 
 func (r *Replacement) UnmarshalJSON(data []byte) error {
 	values := make([]string, 0)
-	json.Unmarshal(data, &values)
+	err := json.Unmarshal(data, &values)
+	if err != nil {
+		return fmt.Errorf("error unmarshaling JSON into slice: %w", err)
+	}
 	if len(values) != 2 {
 		return fmt.Errorf("error unmarshaling replacement with length %d, expecting 2 values", len(values))
 	}
