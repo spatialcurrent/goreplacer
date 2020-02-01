@@ -22,17 +22,19 @@ func New(replacements ...Replacement) (*Replacer, error) {
 
 func (r *Replacer) ReplaceBytes(in []byte) ([]byte, error) {
 	out := make([]byte, 0, len(in))
+	cutoff := 0
 	for _, x := range in {
 		// append byte to output slice
 		out = append(out, x)
 		// iterate through possible replacements
 		for _, repl := range r.replacements {
-			if bytes.HasSuffix(out, repl.Old) {
+			if bytes.HasSuffix(out[cutoff:], repl.Old) {
 				if len(repl.Old) == len(repl.New) {
 					copy(out[len(out)-len(repl.Old):], repl.New)
 				} else {
 					out = append(out[0:len(out)-len(repl.Old)], repl.New...)
 				}
+				cutoff = len(out)
 				break
 			}
 		}

@@ -32,6 +32,15 @@ func TestReplaceStringOne(t *testing.T) {
 	assert.Equal(t, "Hello Planet", out)
 }
 
+func TestReplaceBytesCutoff(t *testing.T) {
+	in := `""\""Hello\""""`
+	s, err := New(Replacement{Old: []byte("\"\""), New: []byte("\"")})
+	assert.NoError(t, err)
+	out, err := s.ReplaceBytes([]byte(in))
+	assert.NoError(t, err)
+	assert.Equal(t, `"\"Hello\""`, string(out))
+}
+
 func TestReplaceStringMultiple(t *testing.T) {
 	in := "Hello\\nWorld\\tCiao\\\\Ciao"
 	s, err := New(
